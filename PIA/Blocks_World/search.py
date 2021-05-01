@@ -11,16 +11,16 @@ def bfs_search(initial_state: BlockState, goal_config):
     """BFS search"""
     # initialize timer
     start_time = time.time()
-
+    
     # initialize frontier and explored
     frontier = Frontier().queue
     frontier.append(initial_state)
     explored = Explored().set
-
+    
     # frontier_configs is used just for searching and doesn't obstructs functionality
     frontier_configs = set()
     frontier_configs.add(initial_state.config)
-
+    
     # initialize metrics variable
     nodes = 0
 

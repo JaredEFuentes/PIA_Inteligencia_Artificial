@@ -11,7 +11,7 @@ class Frontier(object):
 
         'PRIORITY QUEUE'
         self.heap = []
-
+        
     def __contains__(self, item):
 
         # custom method compares only configs
