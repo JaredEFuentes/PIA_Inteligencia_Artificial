@@ -13,7 +13,7 @@ def main():
         exit(0)
     
     try:
-        with open("input_file.txt", 'r') as f:
+        with open("input_file.pddl", 'r') as f:
             
             objects, begin_config, goal_config = parse_file(f)
             
