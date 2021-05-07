@@ -1,4 +1,6 @@
 import re
+import matplotlib.pyplot as plt
+import numpy as np
 
 '''
 Alter configs from plain text to coded list
@@ -99,9 +101,30 @@ def parse_file(file):
     return objects, begin_config, goal_config
 
 
-def write_in_file(moves):
-    with open("solution_file.txt", "w+") as f:
+def write_in_file(file, moves):
+    with open(file, "w+") as f:
         i = 1
         for move in moves:
             f.write(str(i) + ". " + move + "\n")
             i += 1
+
+def print_plot(x_plot, y_plot, title, y_name):
+    # Genero la linea azul de la grafica, con los valores de x ya definidos y los tiempos de y, 'b' indica una linea azul
+    plt.plot(x_plot,y_plot,'b')
+    
+    # Titulo de la grafica
+    plt.title(title)
+    # Nombre del eje x
+    plt.xlabel('Documentos')
+    # Nombre del eje y
+    plt.ylabel(y_name)
+    # Indico que quiero que se vea la cuadricula en el mapa
+    plt.grid(True)
+    # Indico la cantidad de separaciones que quiero entre 0 y 20
+    plt.xticks(np.linspace(0,20,21))
+    # Coloco la linea de el tiempo promedio
+    promedio = sum(y_plot)/len(y_plot)
+    plt.axhline(promedio,color='k',lw=1)
+    
+    # Muestro la grafica
+    plt.show()

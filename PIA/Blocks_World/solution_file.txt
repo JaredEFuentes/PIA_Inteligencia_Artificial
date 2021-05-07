@@ -1,5 +1,3 @@
-1. Move(A,F,D)
-2. Move(B,table,A)
-3. Move(C,table,B)
-4. Move(F,table,C)
-5. Move(E,table,F)
+1. Move(B,table,A)
+2. Move(C,table,B)
+3. Move(D,table,C)

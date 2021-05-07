@@ -23,14 +23,14 @@ def bfs_search(initial_state: BlockState, goal_config):
     
     # initialize metrics variable
     nodes = 0
-
+    
     while frontier and time.time() - start_time < PERIOD_OF_TIME:
-
+        
         # pop the first state entered in frontier
         state = frontier.popleft()
         frontier_configs.remove(state.config)
         explored.add(state.config)
-
+        
         # check if this state is goal state
         if state.config == goal_config:
             print("SUCCESS")
@@ -92,7 +92,7 @@ def a_star_search(initial_state, goal_config):
 
             for child in state.children:
                 # calculate the cost f for child
-                child.f = child.cost + h2(child.config, goal_config)
+                child.f = child.cost + h1(child.config, goal_config)
 
                 # check for duplicates in frontier
                 if child.config not in entry_finder:
@@ -157,7 +157,7 @@ def h2(config, goal_config):
     cost = 0
     index = 0
     for cube in config:
-
+        
         if cube[0] != goal_config[index][0] and cube[1] != goal_config[1]:
             cost += 2
         elif cube[0] != goal_config[index][0] or cube[1] != goal_config[1]:
@@ -172,9 +172,9 @@ def calculate_path_to_goal(state):
     while state.parent is not None:
         moves.append(state.action)
         state = state.parent
-
+        
     moves = moves[::-1]
-
+    
     return moves
 
 
@@ -182,14 +182,14 @@ def is_valid(state, moves, goal_config):
     """check if solution is valid"""
     config = list(map(list, state.config))
     objects = state.objects
-
+    
     for move in moves:
         action = re.split("[(,)]", move)
         # initialize
         movedcube = objects.index(action[1])
         prevplace = action[2]
         currplace = action[3]
-
+        
         # if previous place is table change the state of current place cube 
         # unclear from above and the state of moved cube to above on 
         # current place cube
@@ -218,5 +218,5 @@ def is_valid(state, moves, goal_config):
                 config[movedcube][1] = objects.index(currplace)
             else:
                 return False
-
+            
     return tuple(map(tuple, config)) == goal_config

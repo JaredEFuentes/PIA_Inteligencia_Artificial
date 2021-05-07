@@ -1,12 +1,9 @@
-
-
 # check if cube1 is on table
 def is_on_table(cube1):
     return cube1[1] == -1
 
 
 # The Class that Represents the state of Cubes
-
 class BlockState(object):
 
     def __init__(self, config, n, objects, parent=None, 
@@ -47,7 +44,7 @@ class BlockState(object):
                 if not is_on_table(cube1):
 
                     new_config = list(map(list, self.config))
-
+                    
                     # update config
                     new_config[cube1[1]][0] = -1
                     new_config[index_of_cube1][1] = -1

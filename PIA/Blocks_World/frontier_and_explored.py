@@ -1,6 +1,5 @@
 from collections import deque
 
-
 # TODO : MAKE IT MORE CLEAR
 class Frontier(object):
 
