@@ -44,11 +44,7 @@ def main():
             
             moves = s.calculate_path_to_goal(state)
             valid = s.is_valid(initial_state, moves, goal_config)
-            
-            if valid:
-                print('valid_solution: true')
-            else:
-                print('valid_solution: false')
+            print(f'valid_solution: {valid}')
             
             write_in_file("solution_files" + file.replace(".pddl", ".txt"), moves)
             

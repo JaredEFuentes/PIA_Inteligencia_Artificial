@@ -213,36 +213,35 @@ class Game:
 def main():
     system('cls')
     
-    # en la consola del sistema inicie el script de la siguiente forma
-    # "python tic-tac-toe.py [minimax | prunning]"
-    # solo escriba minimax o prunning para que tipo de IA quiere jugar
-    
     while True:
-        try:
-            gamemode = sys.argv[1]
-            if(gamemode!="minimax" and gamemode!="prunning"):
-                print('Por favor escriba que modo de juego desea,'
-                      '"minimax" o "prunning"?')
         
-        except IndexError as error:
-            print(f'Error de indice: {error}')
-            print('Por favor escriba que modo de juego desea,'
-                  '"minimax" o "prunning"?')
+        while True:
+            try:
+                print('Escoja el modo de juego: [M]inimax/[P]runing ')
+                gamemode = input().lower()
+                if(gamemode=="m" or gamemode=="p"):
+                    break
+            except Exception:
+                print("Ingrese solo una letra, por favor")
         
-        except Exception as error:
-            print(f'Unexpected error occurred {error}')
+        if gamemode=="m":
+            gamemode = "minimax"
+        elif gamemode=="p":
+            gamemode = "prunning"
         
         g = Game(gamemode)
         g.play()
         
+        
         while True:
-            restart = input(print('Desea volver a jugar? (Y=Si, N=No): '))
-            if(restart=='Y' or restart=='N'):
+            print('Desea volver a jugar? (Y=Si, N=No): ')
+            restart = input().lower()
+            if(restart=='y' or restart=='n'):
                 break
             else:
                 print('Entrada incorrecta, por favor, vuelva a intentarlo')
         
-        if(restart=='N'):
+        if(restart=='n'):
             break
 
 if __name__ == "__main__":
