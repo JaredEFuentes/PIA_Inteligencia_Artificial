@@ -1,5 +1,0 @@
-Para poder correr el archivo debe escribir la sintaxis en la linea de comandos de la siguiente manera
-
-" python tic-tac-toe.py [minimax|prunning] "
-
-la parte entre corchetes solo se escribe una de las dos opciones, las dos palabras significan que tipo de IA quiere jugar en contra, una programada con el método minimax u otra con el método de alpha-beta prunning.
