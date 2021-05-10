@@ -1,6 +1,5 @@
 from collections import deque
 
-# TODO : MAKE IT MORE CLEAR
 class Frontier(object):
 
     def __init__(self):
@@ -13,7 +12,7 @@ class Frontier(object):
         
     def __contains__(self, item):
 
-        # custom method compares only configs
+        # comparamos configs
         if self.queue:
             for element in self.queue:
                 if tuple(map(tuple, item.config)) == element.config:

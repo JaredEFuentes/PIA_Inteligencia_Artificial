@@ -2,104 +2,93 @@ import re
 import matplotlib.pyplot as plt
 import numpy as np
 
-'''
-Alter configs from plain text to coded list
-values in config will be
--1 = cube is clear OR
-or  j = cube over it
-AND  x = cube  under it
-or -1 = cube is on table
-'''
-
-
 def create_config(objects, state_in_text):
     config = list()
-
-    # initialize all cubes with -1
+    
+    # inicializar todos los cubos con -1
     for i in range(len(objects)):
         config.append([-1, -1])
-
+        
     for text in state_in_text:
         tokens = re.split('[ ]', text)
         if tokens[0] == 'ON':
             index1, index2 = objects.index(tokens[1]), objects.index(tokens[2])
             config[index2][0] = index1
             config[index1][1] = index2
-
+            
     return tuple(map(tuple, config))
 
 
 def parse_file(file):
-    # read objects till find the line with init
-
+    # leer objetos hasta encontrar la linea con init
     while True:
         line = file.readline()
         if "objects" in line:
             break
-
+        
     objects = re.split("[ \n]", line)
-
+    
     while True:
         line = file.readline()
         if ":INIT" not in line:
             objects.extend(re.split("[ \n)]", line))
         else:
             break
-
-    # trim objects
+        
+    # recortar objetos
     objects.remove("(:objects")
     while '' in objects:
         objects.remove('')
-
+        
     while ')' in objects:
         objects.remove(')')
-
-    # read initial state till find line with goal
+        
+    # leer estado inicial hasta encontrar linea con goal
     init = re.split('[()\n]', line)
-
+    
     while True:
         line = file.readline()
         if ":goal" not in line:
             init.extend(re.split('[()\n]', line))
         else:
             break
-
-    # trim init
+        
+    # recortar init
     while '' in init:
         init.remove('')
-
+        
     for text in init:
         if text.isspace():
             init.remove(text)
     init.remove(":INIT ")
     init.remove('HANDEMPTY')
-
-    # read goal state till find line with EOF
+    
+    # leer estado final hasta encontrar EOF
     goal = re.split('[()\n]', line)
-
+    
     while True:
         line = file.readline()
         if not line:
             break
         else:
             goal.extend(re.split('[()\n]', line))
-
-    # trim goal
+            
+    # recortar goal
     goal.remove(':goal ')
     goal.remove('AND ')
-
+    
     while '' in goal:
         goal.remove('')
-
+        
     for text in goal:
         if text.isspace():
             goal.remove(text)
-
+            
     begin_config = create_config(objects, init)
     goal_config = create_config(objects, goal)
-
+    
     return objects, begin_config, goal_config
-
+    
 
 def write_in_file(file, moves):
     with open(file, "w+") as f:
@@ -107,21 +96,22 @@ def write_in_file(file, moves):
         for move in moves:
             f.write(str(i) + ". " + move + "\n")
             i += 1
+            
 
 def print_plot(x_plot, y_plot, title, y_name):
-    # Genero la linea azul de la grafica, con los valores de x ya definidos y los tiempos de y, 'b' indica una linea azul
+    # Genero la linea azul de la grafica, con los valores de x 
+    # ya definidos y los tiempos de y, 'b' indica una linea azul
     plt.plot(x_plot,y_plot,'b')
     
-    # Titulo de la grafica
     plt.title(title)
-    # Nombre del eje x
     plt.xlabel('Documentos')
-    # Nombre del eje y
     plt.ylabel(y_name)
+    
     # Indico que quiero que se vea la cuadricula en el mapa
     plt.grid(True)
     # Indico la cantidad de separaciones que quiero entre 0 y 20
     plt.xticks(np.linspace(0,20,21))
+    
     # Coloco la linea de el tiempo promedio
     promedio = sum(y_plot)/len(y_plot)
     plt.axhline(promedio,color='k',lw=1)
