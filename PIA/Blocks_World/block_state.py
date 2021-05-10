@@ -1,11 +1,11 @@
 # El cubo esta en la mesa?
 def is_on_table(cube1):
     return cube1[1] == -1
-
+    
 
 # Usaremos esta clase para tener una noción en que posición esta el cubo
 class BlockState(object):
-
+    
     def __init__(self, config, n, objects, parent=None, 
                  action="Initial", cost=0, f=0, ):
         
@@ -33,7 +33,7 @@ class BlockState(object):
                                 # de la config se encuentra cada cubo
                                 
     def expand(self):
-
+        
         index_of_cube1 = 0
         for cube1 in self.config:
             # cube1 esta libre para mover?
@@ -93,7 +93,7 @@ class BlockState(object):
                                            cost=self.cost + 1)
                         # agregar a la lista de children
                         self.children.append(child)
-
+                        
             index_of_cube1 += 1
             
     # busca y encuentra los indices de los cubos libres excepto cubo 1

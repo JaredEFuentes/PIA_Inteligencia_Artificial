@@ -90,8 +90,8 @@ def parse_file(file):
     return objects, begin_config, goal_config
     
 
-def write_in_file(file, moves):
-    with open(file, "w+") as f:
+def write_in_file(output_file, moves):
+    with open(output_file, "w+") as f:
         i = 1
         for move in moves:
             f.write(str(i) + ". " + move + "\n")

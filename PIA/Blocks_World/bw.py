@@ -44,7 +44,7 @@ def main():
             valid = s.is_valid(initial_state, moves, goal_config)
             print(f'Solución valida: {valid}')
             
-            write_in_file("solution_files" + file.replace(".pddl", ".txt"), moves)
+            write_in_file("solution_files/" + file.replace(".pddl", ".txt"), moves)
             
     except EnvironmentError:
         print("Archivo no Encontrado!")

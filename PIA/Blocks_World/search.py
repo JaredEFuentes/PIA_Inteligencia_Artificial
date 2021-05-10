@@ -107,13 +107,13 @@ def add_state(state, entry_finder, frontier):
     entry = [state.f, state]
     entry_finder[state.config] = entry
     heapq.heappush(frontier, entry)
-
+    
 
 def remove_state(config, entry_finder):
     """Marcar un estado existente como REMOVED"""
     entry = entry_finder.pop(config)
     entry[-1] = '<removed-task>'
-
+    
 
 def pop_state(frontier, entry_finder):
     """Quitar y regresar el estado con el menor costo"""
@@ -122,8 +122,8 @@ def pop_state(frontier, entry_finder):
         if state[1] != '<removed-task>':
             del entry_finder[state[1].config]
             return state[1]
+        
 
-#
 def h1(config, goal_config):
     """
     Heuristica 1 - Cuantos bloques no se encuentran en su posición final?
@@ -131,12 +131,12 @@ def h1(config, goal_config):
     cost = 0
     index = 0
     for cube in config:
-
+        
         if cube[1] != goal_config[index][1]:
             cost += 1
         index += 1
     return cost
-
+    
 
 def h2(config, goal_config):
     """
@@ -156,7 +156,7 @@ def h2(config, goal_config):
             cost += 1
         index += 1
     return cost
-
+    
 
 def calculate_path_to_goal(state):
     moves = []
@@ -167,7 +167,7 @@ def calculate_path_to_goal(state):
     moves = moves[::-1]
     
     return moves
-
+    
 
 def is_valid(state, moves, goal_config):
     config = list(map(list, state.config))
