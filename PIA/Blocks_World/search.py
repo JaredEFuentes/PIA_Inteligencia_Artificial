@@ -4,7 +4,7 @@ import heapq
 import re
 import time
 
-PERIOD_OF_TIME = 60
+PERIOD_OF_TIME = 300 # limite de tiempo: 5 minutos
 
 def bfs_search(initial_state: BlockState, goal_config):
     start_time = time.time()
@@ -28,7 +28,6 @@ def bfs_search(initial_state: BlockState, goal_config):
         
         # llegamos al estado final?
         if state.config == goal_config:
-            print("SUCCESS")
             return state, nodes, state.cost, time.time() - start_time
         
         # expandir el estado
@@ -42,8 +41,9 @@ def bfs_search(initial_state: BlockState, goal_config):
                 frontier.append(child)
                 frontier_configs.add(child.config)
     
-    print('FAILURE')
-    exit()
+    # retornamos los valores que consiguió el método de busqueda
+    # aun si no consiguió resolver el problema
+    return state, nodes, state.cost, PERIOD_OF_TIME
 
 def a_star_search(initial_state, goal_config):
     start_time = time.time()
@@ -76,7 +76,6 @@ def a_star_search(initial_state, goal_config):
             
             # hemos llegado al estado final?
             if state.config == goal_config:
-                print("SUCCESS")
                 return state, nodes, max_depth, time.time() - start_time
             
             # expandir el estado
@@ -100,8 +99,9 @@ def a_star_search(initial_state, goal_config):
                     remove_state(child.config, entry_finder)
                     add_state(child, entry_finder, frontier)
                     
-    print('FAILURE')
-    exit()
+    # retornamos los valores que consiguió el método de busqueda
+    # aun si no consiguió resolver el problema
+    return state, nodes, max_depth, PERIOD_OF_TIME
 
 def add_state(state, entry_finder, frontier):
     entry = [state.f, state]

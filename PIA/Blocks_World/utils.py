@@ -19,73 +19,74 @@ def create_config(objects, state_in_text):
     return tuple(map(tuple, config))
 
 
-def parse_file(file):
-    # leer objetos hasta encontrar la linea con init
-    while True:
-        line = file.readline()
-        if "objects" in line:
-            break
-        
-    objects = re.split("[ \n]", line)
-    
-    while True:
-        line = file.readline()
-        if ":INIT" not in line:
-            objects.extend(re.split("[ \n)]", line))
-        else:
-            break
-        
-    # recortar objetos
-    objects.remove("(:objects")
-    while '' in objects:
-        objects.remove('')
-        
-    while ')' in objects:
-        objects.remove(')')
-        
-    # leer estado inicial hasta encontrar linea con goal
-    init = re.split('[()\n]', line)
-    
-    while True:
-        line = file.readline()
-        if ":goal" not in line:
-            init.extend(re.split('[()\n]', line))
-        else:
-            break
-        
-    # recortar init
-    while '' in init:
-        init.remove('')
-        
-    for text in init:
-        if text.isspace():
-            init.remove(text)
-    init.remove(":INIT ")
-    init.remove('HANDEMPTY')
-    
-    # leer estado final hasta encontrar EOF
-    goal = re.split('[()\n]', line)
-    
-    while True:
-        line = file.readline()
-        if not line:
-            break
-        else:
-            goal.extend(re.split('[()\n]', line))
+def parse_file(filename):
+    with open(filename, "r") as file:
+        # leer objetos hasta encontrar la linea con init
+        while True:
+            line = file.readline()
+            if "objects" in line:
+                break
             
-    # recortar goal
-    goal.remove(':goal ')
-    goal.remove('AND ')
-    
-    while '' in goal:
-        goal.remove('')
+        objects = re.split("[ \n]", line)
         
-    for text in goal:
-        if text.isspace():
-            goal.remove(text)
+        while True:
+            line = file.readline()
+            if ":INIT" not in line:
+                objects.extend(re.split("[ \n)]", line))
+            else:
+                break
             
-    begin_config = create_config(objects, init)
-    goal_config = create_config(objects, goal)
+        # recortar objetos
+        objects.remove("(:objects")
+        while '' in objects:
+            objects.remove('')
+            
+        while ')' in objects:
+            objects.remove(')')
+            
+        # leer estado inicial hasta encontrar linea con goal
+        init = re.split('[()\n]', line)
+        
+        while True:
+            line = file.readline()
+            if ":goal" not in line:
+                init.extend(re.split('[()\n]', line))
+            else:
+                break
+            
+        # recortar init
+        while '' in init:
+            init.remove('')
+            
+        for text in init:
+            if text.isspace():
+                init.remove(text)
+        init.remove(":INIT ")
+        init.remove('HANDEMPTY')
+        
+        # leer estado final hasta encontrar EOF
+        goal = re.split('[()\n]', line)
+        
+        while True:
+            line = file.readline()
+            if not line:
+                break
+            else:
+                goal.extend(re.split('[()\n]', line))
+                
+        # recortar goal
+        goal.remove(':goal ')
+        goal.remove('AND ')
+        
+        while '' in goal:
+            goal.remove('')
+            
+        for text in goal:
+            if text.isspace():
+                goal.remove(text)
+                
+        begin_config = create_config(objects, init)
+        goal_config = create_config(objects, goal)
     
     return objects, begin_config, goal_config
     
