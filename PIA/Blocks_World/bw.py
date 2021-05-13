@@ -11,10 +11,11 @@ def main():
     
     while True:
         try:
-            print("\nEscoja que tipo de busqueda desea realizar: [B]readth/[A]-star")
+            print("\nEscoja que tipo de busqueda desea realizar: "
+                  "[B]readth/[D]epth/[A]-star")
             sm = input().lower()
-            if sm=="b":
-                path = "/"
+            if sm=="b" or sm=="d":
+                path = "bd-input_files/"
                 break
             elif sm=="a":
                 path = "astar-input_files/"
@@ -26,11 +27,14 @@ def main():
     #if (sm=="a"):
     for file in listdir ( path ):
     #with open(path + "probBLOCKS-30-0.pddl", 'r') as file:
-        objects, begin_config, goal_config = parse_file(path + path)
+        
+        objects, begin_config, goal_config = parse_file(path + file)
         
         initial_state = BlockState(begin_config, len(begin_config), objects)
         if sm == "b":
             state, nodes, max_depth, running_time = s.bfs_search(initial_state, goal_config)
+        elif sm == "d":
+            state, nodes, max_depth, running_time = s.dfs_search(initial_state, goal_config)
         elif sm == "a":
             state, nodes, max_depth, running_time = s.a_star_search(initial_state, goal_config)
         
@@ -40,7 +44,7 @@ def main():
         print("Profundidad maxima recorrida: ", max_depth)
         print("Tiempo de Ejecución: {0:.06f} segundos".format(running_time))
         
-        list_files.append(file.replace(".pddl", ""))
+        list_files.append(file.replace(".pddl", "")[11:])
         execution_times.append(running_time)
         nodes_problem.append(nodes)
         

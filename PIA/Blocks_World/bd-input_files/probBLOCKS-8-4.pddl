@@ -1,4 +1,4 @@
-(define (problem BLOCKS-8-1)
+(define (problem BLOCKS-8-4)
 (:domain BLOCKS)
 (:objects B A G C F D H E )
 (:INIT (CLEAR E) (CLEAR H) (CLEAR D) (CLEAR F) (ONTABLE C) (ONTABLE G)

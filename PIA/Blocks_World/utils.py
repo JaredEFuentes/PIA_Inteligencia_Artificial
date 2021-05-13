@@ -110,8 +110,8 @@ def print_plot(x_plot, y_plot, title, y_name):
     
     # Indico que quiero que se vea la cuadricula en el mapa
     plt.grid(True)
-    # Indico la cantidad de separaciones que quiero entre 0 y 20
-    plt.xticks(np.linspace(0,20,21))
+    # Indico la cantidad de separaciones que quiero
+    plt.xticks(np.linspace(0,len(x_plot),len(x_plot)+1))
     
     # Coloco la linea de el tiempo promedio
     promedio = sum(y_plot)/len(y_plot)
