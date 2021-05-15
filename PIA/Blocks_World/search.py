@@ -4,9 +4,9 @@ import heapq
 import re
 import time
 
-PERIOD_OF_TIME = 300 # limite de tiempo: 5 minutos
-
 def bfs_search(initial_state: BlockState, goal_config):
+    PERIOD_OF_TIME = 60 # limite de tiempo: 60 segundos
+    
     start_time = time.time()
     
     frontier = Frontier().queue
@@ -47,6 +47,8 @@ def bfs_search(initial_state: BlockState, goal_config):
 
 
 def dfs_search(initial_state: BlockState, goal_config):
+    PERIOD_OF_TIME = 30 # limite de tiempo: 30 segundos
+    
     start_time = time.time()
     
     frontier = Frontier().stack
@@ -97,7 +99,8 @@ def dfs_search(initial_state: BlockState, goal_config):
     return state, nodes, max_depth, PERIOD_OF_TIME
     
 
-def a_star_search(initial_state, goal_config):
+def a_star_search(initial_state, goal_config, heuristic):
+    PERIOD_OF_TIME = 150 # limite de tiempo: 300 segundos
     start_time = time.time()
     
     frontier = Frontier().heap  # lista de entradas ordenadas en un heap
@@ -107,7 +110,11 @@ def a_star_search(initial_state, goal_config):
     
     # calcular la heuristica inicial
     # en este punto, el costo g es 0
-    initial_state.f = h1(initial_state.config, goal_config)
+    if (heuristic=="1" or heuristic=="a"):
+        initial_state.f = h1(initial_state.config, goal_config)
+    elif heuristic=="2":
+        initial_state.f = h2(initial_state.config, goal_config)
+    
     # añadir estado inicial
     add_state(initial_state, entry_finder, frontier)
     
@@ -137,7 +144,10 @@ def a_star_search(initial_state, goal_config):
             
             for child in state.children:
                 # calcular el costo f para nodo hijo
-                child.f = child.cost + h1(child.config, goal_config)
+                if heuristic=="1":
+                    child.f = child.cost + h1(child.config, goal_config)
+                elif (heuristic=="2" or heuristic=="a"):
+                    child.f = child.cost + h2(child.config, goal_config)
                 
                 # revisar por duplicados en frontier
                 if child.config not in entry_finder:

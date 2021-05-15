@@ -1,8 +1,0 @@
-(define (problem BLOCKS-13-5)
-(:domain BLOCKS)
-(:objects L H E A J C D F G K M I B )
-(:INIT (CLEAR M) (ONTABLE K) (ON M F) (ON F D) (ON D C) (ON C J) (ON J A) 
- (ON A E) (ON E H) (ON H L) (ON L B) (ON B G) (ON G I) (ON I K) (HANDEMPTY))
-(:goal (AND (ON I E) (ON E K) (ON K A) (ON A D) (ON D J) (ON J M) (ON M H)
-            (ON H G) (ON G C) (ON C B) (ON B L) (ON L F)))
-)

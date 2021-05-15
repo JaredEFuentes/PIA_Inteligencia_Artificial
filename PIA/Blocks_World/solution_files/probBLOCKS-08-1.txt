@@ -1,0 +1,7 @@
+1. Move(D,B,E)
+2. Move(A,F,D)
+3. Move(B,G,table)
+4. Move(G,table,A)
+5. Move(F,H,G)
+6. Move(H,table,F)
+7. Move(B,table,H)

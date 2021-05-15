@@ -1,6 +1,5 @@
 import re
 import matplotlib.pyplot as plt
-import numpy as np
 
 def create_config(objects, state_in_text):
     config = list()
@@ -110,12 +109,6 @@ def print_plot(x_plot, y_plot, title, y_name):
     
     # Indico que quiero que se vea la cuadricula en el mapa
     plt.grid(True)
-    # Indico la cantidad de separaciones que quiero
-    plt.xticks(np.linspace(0,len(x_plot),len(x_plot)+1))
-    
-    # Coloco la linea de el tiempo promedio
-    promedio = sum(y_plot)/len(y_plot)
-    plt.axhline(promedio,color='k',lw=1)
     
     # Muestro la grafica
     plt.show()
