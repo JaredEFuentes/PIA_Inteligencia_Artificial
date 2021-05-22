@@ -30,7 +30,6 @@ def main():
             print("Solo ingrese una letra, porfavor")
             exit(0)
     
-    #if (sm=="a"):
     for file in listdir ( path ):
         
         objects, begin_config, goal_config = parse_file(path + file)
@@ -38,16 +37,16 @@ def main():
         initial_state = BlockState(begin_config, len(begin_config), objects)
         
         if sm == "b":
-            state, nodes, max_depth, running_time = s.bfs_search(initial_state, goal_config)
+            state, nodes, running_time = s.bfs_search(initial_state, goal_config)
         elif sm == "d":
-            state, nodes, max_depth, running_time = s.dfs_search(initial_state, goal_config)
+            state, nodes, running_time = s.dfs_search(initial_state, goal_config)
         elif sm == "a":
-            state, nodes, max_depth, running_time = s.a_star_search(initial_state, goal_config, h)
+            state, nodes, running_time = s.a_star_search(initial_state, goal_config, h)
         
         moves = s.calculate_path_to_goal(state)
         valid = s.is_valid(initial_state, moves, goal_config)
         
-        #print("\nArchivo", file.replace(".pddl",""))
+        print("\nArchivo", file.replace(".pddl",""))
         print("Se alcanzó el estado final?: ", "Si" if valid else "No")
         print("Cantidad de movimientos (Profundidad maxima recorrida): ", len(moves))
         print("Nodos expandidos: ", nodes)

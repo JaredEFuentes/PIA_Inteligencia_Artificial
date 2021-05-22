@@ -1,16 +1,18 @@
 import time
-import sys
 from os import system
+import seaborn as sns
+import numpy as np
+import pandas as pd
 
 class Game:
-    def __init__(self, gamemode):
-        self.game_mode = gamemode
+    def __init__(self):
+        self.game_mode = ''
         self.tablero = [['.','.','.'],
                         ['.','.','.'],
                         ['.','.','.']]
+        self.turno = ''
         
-        # El jugador X siempre empieza primero, en este caso, el usuario
-        self.turno = 'X'
+        self.data_for_excel = []
     
     def draw_board(self):
         print()
@@ -91,9 +93,9 @@ class Game:
                     # arbol de movimientos
                     self.tablero[i][j] = 'O'
                     
-                    if(self.game_mode=="minimax"):
+                    if(self.game_mode=="m"):
                         (m, min_i, min_j) = self.min(0, 0)
-                    elif(self.game_mode=="prunning"):
+                    elif(self.game_mode=="p"):
                         (m, min_i, min_j) = self.min(alpha, beta)
                         
                     if m > maxv:
@@ -103,10 +105,10 @@ class Game:
                     # Lo devolvemos a como estaba la casilla
                     self.tablero[i][j] = '.'
                         
-                    if (maxv >= beta and self.game_mode=="prunning"):
+                    if (maxv >= beta and self.game_mode=="p"):
                         return (maxv, px, py)
                     
-                    if (maxv > alpha and self.game_mode=="prunning"):
+                    if (maxv > alpha and self.game_mode=="p"):
                        alpha = maxv
                         
         return (maxv, px, py)
@@ -137,9 +139,9 @@ class Game:
                     # para expandir el arbol de movimientos
                     self.tablero[i][j] = 'X'
                     
-                    if(self.game_mode=="minimax"):
+                    if(self.game_mode=="m"):
                         (m, min_i, min_j) = self.max(0, 0)
-                    elif(self.game_mode=="prunning"):
+                    elif(self.game_mode=="p"):
                         (m, min_i, min_j) = self.max(alpha, beta)
                     
                     if m < minv:
@@ -148,15 +150,27 @@ class Game:
                         qy = j
                     self.tablero[i][j] = '.'
                     
-                    if (minv <= alpha and self.game_mode=="prunning"):
+                    if (minv <= alpha and self.game_mode=="p"):
                         return (minv, qx, qy)
                     
-                    if (minv < beta and self.game_mode=="prunning"):
+                    if (minv < beta and self.game_mode=="p"):
                        alpha = minv
         
         return (minv, qx, qy)
     
-    def play(self):
+    def play(self, gamemode, play):
+        maxt = 0
+        mint = 100
+        fila = []
+        
+        self.game_mode = gamemode
+        self.tablero = [['.','.','.'],
+                        ['.','.','.'],
+                        ['.','.','.']]
+        
+        # El jugador X siempre empieza primero, en este caso, el usuario
+        self.turno = 'X'
+        
         while True:
             self.draw_board()
             result = self.is_end()
@@ -167,6 +181,9 @@ class Game:
                     print("Es un empate!")
                 else:
                     print(f'El ganador es {result}!')
+                
+                fila.extend((play, mint, maxt, self.game_mode))
+                self.data_for_excel.append(fila)
                 return
     
             # Es el turno del Jugador?
@@ -196,42 +213,55 @@ class Game:
             # Es el turno de la IA?
             else:
                 start = time.time()
-                if(self.game_mode=="minimax"):
+                if(self.game_mode=="m"):
                     (m, px, py) = self.max(0, 0)
-                elif(self.game_mode=="prunning"):
+                elif(self.game_mode=="p"):
                     (m, px, py) = self.max(-2,2)
                 end = time.time()
                 
-                print('Tiempo para movimiento: {:.6f} segundos'.format(end - start))
+                execute = end - start
+                
+                if maxt < execute:
+                    maxt = execute
+                if mint > execute:
+                    mint = execute
+                
+                print('Tiempo para movimiento: {:.6f} segundos'.format(execute))
                 print(f'Movimiento a realizar: X = {px+1}, Y = {py+1}')
                 
                 self.tablero[px][py] = 'O'
                 # Se pasa el turno al usuario
                 self.turno = 'X'
-                
+    
+    def create_Excel(self, rounds):
+        columna = ["Round", "Min_time", "Max_time", "Gamemode"]
+        df = pd.DataFrame(self.data_for_excel, index = rounds, columns = columna)
+        df.to_excel('datos_rondas.xlsx', sheet_name='Hoja1')
+    
+    def draw_times(self):
+        df = pd.read_excel('datos_rondas.xlsx', sheet_name='Hoja1')
+        sns.boxplot(x="Gamemode", y="Max_time", data=df)
     
 def main():
     system('cls')
+    g = Game()
+    i = -1
+    rondas = []
     
     while True:
         
         while True:
             try:
-                print('Escoja el modo de juego: [M]inimax/[P]runing ')
+                print('\nEscoja el modo de juego: [M]inimax/[P]runing ')
                 gamemode = input().lower()
                 if(gamemode=="m" or gamemode=="p"):
+                    i = i+1
                     break
             except Exception:
                 print("Ingrese solo una letra, por favor")
         
-        if gamemode=="m":
-            gamemode = "minimax"
-        elif gamemode=="p":
-            gamemode = "prunning"
-        
-        g = Game(gamemode)
-        g.play()
-        
+        rondas.append(i)
+        g.play(gamemode, i)
         
         while True:
             print('Desea volver a jugar? (Y=Si, N=No): ')
@@ -241,8 +271,11 @@ def main():
             else:
                 print('Entrada incorrecta, por favor, vuelva a intentarlo')
         
-        if(restart=='n'):
+        if restart=='n' :
             break
+    
+    g.create_Excel(rondas)
+    g.draw_times()
 
 if __name__ == "__main__":
     main()

@@ -28,7 +28,7 @@ def bfs_search(initial_state: BlockState, goal_config):
         
         # llegamos al estado final?
         if state.config == goal_config:
-            return state, nodes, state.cost, time.time() - start_time
+            return state, nodes, time.time() - start_time
         
         # expandir el estado
         state.expand()
@@ -43,7 +43,7 @@ def bfs_search(initial_state: BlockState, goal_config):
     
     # retornamos los valores que consiguió el método de busqueda
     # aun si no consiguió resolver el problema
-    return state, nodes, state.cost, PERIOD_OF_TIME
+    return state, nodes, PERIOD_OF_TIME
 
 
 def dfs_search(initial_state: BlockState, goal_config):
@@ -60,7 +60,6 @@ def dfs_search(initial_state: BlockState, goal_config):
     frontier_configs.add(initial_state.config)
     
     # inicializar variable de métricas
-    max_depth = 0
     nodes = 0
     while frontier and time.time() - start_time < PERIOD_OF_TIME:
         
@@ -72,18 +71,14 @@ def dfs_search(initial_state: BlockState, goal_config):
         if state.config not in explored:
             explored.add(state.config)
             
-            # actualizar profunidad máxima
-            if max_depth < state.cost:
-                max_depth = state.cost
-                
             # llegamos al estado final?
             if state.config == goal_config:
-                return state, nodes, max_depth, time.time() - start_time
+                return state, nodes, time.time() - start_time
             
             # expandir el estado
             state.expand()
             
-            # reverse children to put it in frontier with the same priority as bfs
+            # revertir hijos para agregarlos en frontier con la misma prioridad que bfs
             state.children = state.children[::-1]
             nodes = nodes + 1
             
@@ -96,7 +91,7 @@ def dfs_search(initial_state: BlockState, goal_config):
                     
     # retornamos los valores que consiguió el método de busqueda
     # aun si no consiguió resolver el problema
-    return state, nodes, max_depth, PERIOD_OF_TIME
+    return state, nodes, PERIOD_OF_TIME
     
 
 def a_star_search(initial_state, goal_config, heuristic):
@@ -105,7 +100,6 @@ def a_star_search(initial_state, goal_config, heuristic):
     
     frontier = Frontier().heap  # lista de entradas ordenadas en un heap
     entry_finder = {}  # mapo de estados a entradas
-    
     explored = Explored().set  # un set de estados explorados
     
     # calcular la heuristica inicial
@@ -120,7 +114,6 @@ def a_star_search(initial_state, goal_config, heuristic):
     
     # inicializar variable de métricas
     nodes = 0
-    max_depth = 0
     while frontier and time.time() - start_time < PERIOD_OF_TIME:
         # sacar el estado con menor costo desde frontier
         state = pop_state(frontier, entry_finder)
@@ -129,13 +122,9 @@ def a_star_search(initial_state, goal_config, heuristic):
         if state.config not in explored:
             explored.add(state.config)
             
-            # actualizar la profundidad maxima
-            if max_depth < state.cost:
-                max_depth = state.cost
-            
             # hemos llegado al estado final?
             if state.config == goal_config:
-                return state, nodes, max_depth, time.time() - start_time
+                return state, nodes, time.time() - start_time
             
             # expandir el estado
             state.expand()
@@ -149,7 +138,7 @@ def a_star_search(initial_state, goal_config, heuristic):
                 elif (heuristic=="2" or heuristic=="a"):
                     child.f = child.cost + h2(child.config, goal_config)
                 
-                # revisar por duplicados en frontier
+                # revisar por duplicados en entry_finder
                 if child.config not in entry_finder:
                     add_state(child, entry_finder, frontier)
                     
@@ -163,7 +152,7 @@ def a_star_search(initial_state, goal_config, heuristic):
                     
     # retornamos los valores que consiguió el método de busqueda
     # aun si no consiguió resolver el problema
-    return state, nodes, max_depth, PERIOD_OF_TIME
+    return state, nodes, PERIOD_OF_TIME
 
 
 def add_state(state, entry_finder, frontier):

@@ -3,6 +3,6 @@
 (:objects D A H G B J E I F C )
 (:INIT (CLEAR J) (CLEAR H) (CLEAR F) (ONTABLE C) (ONTABLE I) (ONTABLE F) 
  (ON J B) (ON B G) (ON G C) (ON H A) (ON A D) (ON D E) (ON E I) (HANDEMPTY))
-(:goal (AND (ON D A) (ON A H) (ON H G) (ON G B) (ON B J) (ON J E) (ON E I)
-            (ON I F) (ON F C)))
+(:goal (AND (ON J B) (ON B G) (ON G A) (ON A C) (ON C H) (ON H F) (ON F D) 
+	    (ON D E) (ON E I)))
 )
