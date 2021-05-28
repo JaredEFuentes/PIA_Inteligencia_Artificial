@@ -1,5 +1,0 @@
-1. Move(B,C,table)
-2. Move(C,A,table)
-3. Move(A,D,B)
-4. Move(C,table,A)
-5. Move(D,table,C)

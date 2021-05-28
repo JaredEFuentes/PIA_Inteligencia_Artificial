@@ -104,9 +104,9 @@ def a_star_search(initial_state, goal_config, heuristic):
     
     # calcular la heuristica inicial
     # en este punto, el costo g es 0
-    if (heuristic=="1" or heuristic=="a"):
+    if (heuristic=="heuristica_1" or heuristic=="ambas"):
         initial_state.f = h1(initial_state.config, goal_config)
-    elif heuristic=="2":
+    elif heuristic=="heuristica_2":
         initial_state.f = h2(initial_state.config, goal_config)
     
     # añadir estado inicial
@@ -133,9 +133,9 @@ def a_star_search(initial_state, goal_config, heuristic):
             
             for child in state.children:
                 # calcular el costo f para nodo hijo
-                if heuristic=="1":
+                if heuristic=="heuristica_1":
                     child.f = child.cost + h1(child.config, goal_config)
-                elif (heuristic=="2" or heuristic=="a"):
+                elif (heuristic=="heuristica_2" or heuristic=="ambas"):
                     child.f = child.cost + h2(child.config, goal_config)
                 
                 # revisar por duplicados en entry_finder

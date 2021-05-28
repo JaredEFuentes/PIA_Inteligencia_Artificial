@@ -1,5 +1,7 @@
 import re
 import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
 
 def create_config(objects, state_in_text):
     config = list()
@@ -112,3 +114,11 @@ def print_plot(x_plot, y_plot, title, y_name):
     
     # Muestro la grafica
     plt.show()
+
+def create_Excel(data, indices, columna, hoja):
+    df = pd.DataFrame(data, index = indices, columns = columna)
+    df.to_excel('boxplot_block_world.xlsx', sheet_name=hoja)
+
+def print_box(hoja, ylabel):
+    df = pd.read_excel('boxplot_block_world.xlsx', sheet_name=hoja)
+    sns.boxplot(x="Busqueda", y=ylabel, data=df)

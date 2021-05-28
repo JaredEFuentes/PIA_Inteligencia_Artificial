@@ -1,7 +1,6 @@
 import time
 from os import system
 import seaborn as sns
-import numpy as np
 import pandas as pd
 
 class Game:
@@ -158,7 +157,7 @@ class Game:
         
         return (minv, qx, qy)
     
-    def play(self, gamemode, play):
+    def play(self, gamemode):
         maxt = 0
         mint = 100
         fila = []
@@ -182,7 +181,7 @@ class Game:
                 else:
                     print(f'El ganador es {result}!')
                 
-                fila.extend((play, mint, maxt, self.game_mode))
+                fila.extend((mint, maxt, self.game_mode))
                 self.data_for_excel.append(fila)
                 return
     
@@ -245,7 +244,7 @@ class Game:
 def main():
     system('cls')
     g = Game()
-    i = -1
+    i = 0
     rondas = []
     
     while True:
@@ -261,7 +260,7 @@ def main():
                 print("Ingrese solo una letra, por favor")
         
         rondas.append(i)
-        g.play(gamemode, i)
+        g.play(gamemode)
         
         while True:
             print('Desea volver a jugar? (Y=Si, N=No): ')
