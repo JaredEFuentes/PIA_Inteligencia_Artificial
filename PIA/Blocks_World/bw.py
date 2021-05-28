@@ -5,6 +5,7 @@ from block_state import BlockState
 from utils import parse_file, write_in_file, print_plot, create_Excel, print_box
 
 def main():
+    """
     execution_times = []
     nodes_problem = []
     list_files = []
@@ -93,11 +94,11 @@ def main():
     #subir datos a un excel
     columna = ["Tiempo", "Nodos", "Movimientos", "Busqueda"]
     create_Excel(data_for_excel, all_files, columna, hoja)
-    
+    """
     # imprimir datos para comparar tipos de busqueda  
-    print_box(hoja, "Tiempo")
-    print_box(hoja, "Nodos")
-    print_box(hoja, "Movimientos")
+    print_box("A-star", "Tiempo")
+    print_box("A-star", "Nodos")
+    print_box("A-star", "Movimientos")
     
 
 if __name__ == '__main__':
